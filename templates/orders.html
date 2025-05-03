@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Order Management</title>
+    <!-- Your existing styles -->
+</head>
+<body>
+    <h1>Order Management</h1>
+    
+    <div class="action-buttons">
+        <a href="/" class="button">Back to Home</a>
+        <a href="/export_orders_csv" class="button">Export to CSV</a>
+    </div>
+    
+    <h2>Order History</h2>
+    
+    {% if error %}
+        <div style="color: red; padding: 10px; background: #ffeeee; margin: 10px 0;">
+            {{ error }}
+        </div>
+    {% endif %}
+    
+    <table id="orders-table">
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Date</th>
+                <th>Item</th>
+                <th>Price</th>
+                <th>Qty</th>
+                <th>Total</th>
+                <th>Address</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if orders %}
+                {% for order in orders %}
+                <tr>
+                    <td>{{ order.order_id }}</td>
+                    <td>{{ order.order_date.strftime('%Y-%m-%d %H:%M') if order.order_date else 'N/A' }}</td>
+                    <td>{{ order.item_name }}</td>
+                    <td>₹{{ order.price }}</td>
+                    <td>{{ order.quantity }}</td>
+                    <td>₹{{ order.price * order.quantity }}</td>
+                    <td>{{ order.delivery_address }}</td>
+                    <td>
+                        <button class="delete-btn" onclick="deleteOrder({{ order.order_id }})">Delete</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="8" style="text-align: center;">No orders available</td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+
+    <!-- Your existing script -->
+</body>
+</html>
